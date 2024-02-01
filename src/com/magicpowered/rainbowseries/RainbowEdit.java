@@ -1,6 +1,7 @@
 package com.magicpowered.rainbowseries;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -34,6 +35,8 @@ public class RainbowEdit extends JavaPlugin implements Listener {
             Bukkit.getServer().getLogger().info("   |'|..'||   ||...|'         ||''|'    ||''|       彩虹编辑 RainbowEdit v24.0.1.1");
             Bukkit.getServer().getLogger().info("   | '|' ||   ||        ||    ||   |.   ||          由 JLING 制作");
             Bukkit.getServer().getLogger().info("  .|. | .||. .||.            .||.  '|' .||.....|    https://magicpowered.cn");
+            Bukkit.getServer().getLogger().info(" ");
+            Bukkit.getServer().getLogger().info(ChatColor.DARK_PURPLE + "  穿梭虚幻真实间，彩虹映开万象天");
             Bukkit.getServer().getLogger().info(" ");
 
         } catch (Exception e) {
