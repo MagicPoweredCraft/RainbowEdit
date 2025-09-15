@@ -1,4 +1,4 @@
-package com.magicpowered.rainbowseries;
+package com.magicpowered.rainbowedit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,15 +32,13 @@ public class RainbowEdit extends JavaPlugin implements Listener {
             Bukkit.getServer().getLogger().info(" ");
             Bukkit.getServer().getLogger().info("  '||    ||' '||''|.         '||''|.   '||''''|     妙控动力 MagicPowered");
             Bukkit.getServer().getLogger().info("   |||  |||   ||   ||   ||   '||   ||   ||  .       彩虹系列 RainbowSeries");
-            Bukkit.getServer().getLogger().info("   |'|..'||   ||...|'         ||''|'    ||''|       彩虹编辑 RainbowEdit v24.0.1.1");
-            Bukkit.getServer().getLogger().info("   | '|' ||   ||        ||    ||   |.   ||          由 JLING 制作");
+            Bukkit.getServer().getLogger().info("   |'|..'||   ||...|'         ||''|'    ||''|       彩虹编辑 RainbowEdit " + getDescription().getVersion());
+            Bukkit.getServer().getLogger().info("   | '|' ||   ||        ||    ||   |.   ||          开发者: JLING");
             Bukkit.getServer().getLogger().info("  .|. | .||. .||.            .||.  '|' .||.....|    https://magicpowered.cn");
-            Bukkit.getServer().getLogger().info(" ");
-            Bukkit.getServer().getLogger().info(ChatColor.DARK_PURPLE + "  穿梭虚幻真实间，彩虹映开万象天");
             Bukkit.getServer().getLogger().info(" ");
 
         } catch (Exception e) {
-            Bukkit.getServer().getLogger().info("[彩虹编辑] 启动失败!");
+            Bukkit.getServer().getLogger().info("[彩虹编辑] 启动失败");
             e.printStackTrace();
         }
 
@@ -49,7 +47,7 @@ public class RainbowEdit extends JavaPlugin implements Listener {
     @EventHandler
     public void onPluginDisable(PluginDisableEvent event) {
         if (event.getPlugin().getName().equalsIgnoreCase("RainbowEdit")) {
-            Bukkit.getServer().getLogger().info("[彩虹编辑] 彩虹光照，世界依然，再会!");
+            Bukkit.getServer().getLogger().info("[彩虹编辑] 插件已卸载，再会!");
         }
     }
 

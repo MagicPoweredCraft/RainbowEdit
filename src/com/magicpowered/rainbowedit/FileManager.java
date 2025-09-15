@@ -1,4 +1,4 @@
-package com.magicpowered.rainbowseries;
+package com.magicpowered.rainbowedit;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

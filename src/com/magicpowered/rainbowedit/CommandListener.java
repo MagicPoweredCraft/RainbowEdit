@@ -1,4 +1,4 @@
-package com.magicpowered.rainbowseries;
+package com.magicpowered.rainbowedit;
 
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -72,13 +72,13 @@ public class CommandListener implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            sender.sendMessage("§7[§b彩虹编辑§7] 帮助:");
-            sender.sendMessage("§7必要参数: <?>, 可选必要参数: <?/?>, 非必要参数: [?], 可选非必要参数: [?/?]");
-            sender.sendMessage("§7  |- §b/re command §7- 查看文字指令帮助");
-            sender.sendMessage("§7  |- §b/ru ? §7- 查看 §b查看符号指令帮助");
-            sender.sendMessage("§7  |- §7使用 §b_ §7- 可以表示空格, 用以输入多个连续空格");
-            sender.sendMessage("§7  |- §7使用 §b\\_ §7- 表示下划线");
-            sender.sendMessage("§7  |- §b/ru reload §7- 重新载入配置文件 (管理员)");
+            sender.sendMessage("§f[§b彩虹编辑§f] 帮助:");
+            sender.sendMessage("§f必要参数: <?>, 可选必要参数: <?/?>, 非必要参数: [?], 可选非必要参数: [?/?]");
+            sender.sendMessage("§7  |- §b/re command §f- 查看文字指令帮助");
+            sender.sendMessage("§7  |- §b/ru ? §f- 查看 §b查看符号指令帮助");
+            sender.sendMessage("§7  |- §f使用 §b_ §f- 可以表示空格, 用以输入多个连续空格");
+            sender.sendMessage("§7  |- §f使用 §b\\_ §f- 表示下划线");
+            sender.sendMessage("§7  |- §b/ru reload §f- 重新载入配置文件 (管理员)");
             return true;
         }
 
@@ -90,12 +90,12 @@ public class CommandListener implements CommandExecutor, TabCompleter {
             case "!":
             case "name":
                 if (!sender.hasPermission("rainbowedit.name")) {
-                    sender.sendMessage("§7[§b彩虹编辑§7] 您没有执行此命令的权限");
+                    sender.sendMessage("§f[§b彩虹编辑§f] 您没有执行此命令的权限");
                     return true;
                 }
 
                 if (args.length < 2) {
-                    player.sendMessage("§7[§b彩虹编辑§7] 错误, 缺少必要参数: <String>");
+                    player.sendMessage("§f[§b彩虹编辑§f] 错误, 缺少必要参数: <String>");
                     return true;
                 }
 
@@ -107,12 +107,12 @@ public class CommandListener implements CommandExecutor, TabCompleter {
             case "+":
             case "add":
                 if (!sender.hasPermission("rainbowedit.lore")) {
-                    sender.sendMessage("§7[§b彩虹编辑§7] 您没有执行此命令的权限");
+                    sender.sendMessage("§f[§b彩虹编辑§f] 您没有执行此命令的权限");
                     return true;
                 }
 
                 if (args.length < 2) {
-                    player.sendMessage("§7[§b彩虹编辑§7] 错误, 缺少必要参数: <String>");
+                    player.sendMessage("§f[§b彩虹编辑§f] 错误, 缺少必要参数: <String>");
                     return true;
                 }
 
@@ -123,17 +123,17 @@ public class CommandListener implements CommandExecutor, TabCompleter {
             case "@":
             case "set":
                 if (!sender.hasPermission("rainbowedit.lore")) {
-                    sender.sendMessage("§7[§b彩虹编辑§7] 您没有执行此命令的权限");
+                    sender.sendMessage("§f[§b彩虹编辑§f] 您没有执行此命令的权限");
                     return true;
                 }
 
                 if (args.length < 2) {
-                    player.sendMessage("§7[§b彩虹编辑§7] 错误, 缺少必要参数: <String>");
+                    player.sendMessage("§f[§b彩虹编辑§f] 错误, 缺少必要参数: <String>");
                     return true;
                 }
 
                 if (args.length < 3) {
-                    player.sendMessage("§7[§b彩虹编辑§7] 错误, 缺少必要参数: <line>");
+                    player.sendMessage("§f[§b彩虹编辑§f] 错误, 缺少必要参数: <line>");
                     return true;
                 }
 
@@ -141,7 +141,7 @@ public class CommandListener implements CommandExecutor, TabCompleter {
                 try {
                     lineToSet = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
-                    player.sendMessage("§7[§b彩虹编辑§7] 错误, 参数 " + args[1] + " 不是数字");
+                    player.sendMessage("§f[§b彩虹编辑§f] 错误, 参数 " + args[1] + " 不是数字");
                     return true;
                 }
 
@@ -154,17 +154,17 @@ public class CommandListener implements CommandExecutor, TabCompleter {
             case "<":    
             case "after":
                 if (!sender.hasPermission("rainbowedit.lore")) {
-                    sender.sendMessage("§7[§b彩虹编辑§7] 您没有执行此命令的权限");
+                    sender.sendMessage("§f[§b彩虹编辑§f] 您没有执行此命令的权限");
                     return true;
                 }
 
                 if (args.length < 2) {
-                    player.sendMessage("§7[§b彩虹编辑§7] 错误, 缺少必要参数: <line>");
+                    player.sendMessage("§f[§b彩虹编辑§f] 错误, 缺少必要参数: <line>");
                     return true;
                 }
 
                 if (args.length < 3) {
-                    player.sendMessage("§7[§b彩虹编辑§7] 错误, 缺少必要参数: <String>");
+                    player.sendMessage("§f[§b彩虹编辑§f] 错误, 缺少必要参数: <String>");
                     return true;
                 }
 
@@ -172,7 +172,7 @@ public class CommandListener implements CommandExecutor, TabCompleter {
                 try {
                     line = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
-                    player.sendMessage("§7[§b彩虹编辑§7] 错误, 参数 " + args[1] + " 不是数字");
+                    player.sendMessage("§f[§b彩虹编辑§f] 错误, 参数 " + args[1] + " 不是数字");
                     return true;
                 }
 
@@ -187,21 +187,21 @@ public class CommandListener implements CommandExecutor, TabCompleter {
             case "#":
             case "replace":
                 if (!sender.hasPermission("rainbowedit.lore")) {
-                    sender.sendMessage("§7[§b彩虹编辑§7] 您没有执行此命令的权限");
+                    sender.sendMessage("§f[§b彩虹编辑§f] 您没有执行此命令的权限");
                     return true;
                 }
 
                 if (args.length < 2) {
-                    player.sendMessage("§7[§b彩虹编辑§7] 错误, 缺少必要参数: <line>");
+                    player.sendMessage("§f[§b彩虹编辑§f] 错误, 缺少必要参数: <line>");
                     return true;
                 }
 
                 if (args.length < 3) {
-                    player.sendMessage("§7[§b彩虹编辑§7] 错误, 缺少必要参数: <oldString> <newString>");
+                    player.sendMessage("§f[§b彩虹编辑§f] 错误, 缺少必要参数: <oldString> <newString>");
                     return true;
                 }
                 if (args.length < 4) {
-                    player.sendMessage("§7[§b彩虹编辑§7] 错误, 缺少必要参数: <newString>");
+                    player.sendMessage("§f[§b彩虹编辑§f] 错误, 缺少必要参数: <newString>");
                     return true;
                 }
 
@@ -209,7 +209,7 @@ public class CommandListener implements CommandExecutor, TabCompleter {
                 try {
                     lineToReplace = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
-                    player.sendMessage("§7[§b彩虹编辑§7] 错误, 参数 " + args[1] + " 不是数字");
+                    player.sendMessage("§f[§b彩虹编辑§f] 错误, 参数 " + args[1] + " 不是数字");
                     return true;
                 }
 
@@ -221,12 +221,12 @@ public class CommandListener implements CommandExecutor, TabCompleter {
             case "-":
             case "remove":
                 if (!sender.hasPermission("rainbowedit.lore")) {
-                    sender.sendMessage("§7[§b彩虹编辑§7] 您没有执行此命令的权限");
+                    sender.sendMessage("§f[§b彩虹编辑§f] 您没有执行此命令的权限");
                     return true;
                 }
 
                 if (args.length < 2) {
-                    player.sendMessage("§7[§b彩虹编辑§7] 错误, 缺少必要参数: <line>");
+                    player.sendMessage("§f[§b彩虹编辑§f] 错误, 缺少必要参数: <line>");
                     return true;
                 }
 
@@ -234,7 +234,7 @@ public class CommandListener implements CommandExecutor, TabCompleter {
                 try {
                     lineToRemove = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
-                    player.sendMessage("§7[§b彩虹编辑§7] 错误, 参数 " + args[1] + " 不是数字");
+                    player.sendMessage("§f[§b彩虹编辑§f] 错误, 参数 " + args[1] + " 不是数字");
                     return true;
                 }
 
@@ -244,7 +244,7 @@ public class CommandListener implements CommandExecutor, TabCompleter {
             case "%":
             case "clear":
                 if (!sender.hasPermission("rainbowedit.lore")) {
-                    sender.sendMessage("§7[§b彩虹编辑§7] 您没有执行此命令的权限");
+                    sender.sendMessage("§f[§b彩虹编辑§f] 您没有执行此命令的权限");
                     return true;
                 }
 
@@ -254,7 +254,7 @@ public class CommandListener implements CommandExecutor, TabCompleter {
             case "$":
             case "preview":
                 if (!sender.hasPermission("rainbowedit.lore")) {
-                    sender.sendMessage("§7[§b彩虹编辑§7] 您没有执行此命令的权限");
+                    sender.sendMessage("§f[§b彩虹编辑§f] 您没有执行此命令的权限");
                     return true;
                 }
 
@@ -264,7 +264,7 @@ public class CommandListener implements CommandExecutor, TabCompleter {
             case ".":
             case "apply":
                 if (!sender.hasPermission("rainbowedit.lore")) {
-                    sender.sendMessage("§7[§b彩虹编辑§7] 您没有执行此命令的权限");
+                    sender.sendMessage("§f[§b彩虹编辑§f] 您没有执行此命令的权限");
                     return true;
                 }
 
@@ -278,7 +278,7 @@ public class CommandListener implements CommandExecutor, TabCompleter {
             case ":":
             case "cancel":
                 if (!sender.hasPermission("rainbowedit.lore")) {
-                    sender.sendMessage("§7[§b彩虹编辑§7] 您没有执行此命令的权限");
+                    sender.sendMessage("§f[§b彩虹编辑§f] 您没有执行此命令的权限");
                     return true;
                 }
 
@@ -292,48 +292,48 @@ public class CommandListener implements CommandExecutor, TabCompleter {
             case ",":
             case "reload":
                 if (!sender.hasPermission("rainbowedit.reload")) {
-                    sender.sendMessage("§7[§b彩虹编辑§7] 您没有执行此命令的权限");
+                    sender.sendMessage("§f[§b彩虹编辑§f] 您没有执行此命令的权限");
                     return true;
                 }
 
                 fileManager.reloadConfig();
-                sender.sendMessage("§7[§b彩虹编辑§7] 配置文件已重新加载");
+                sender.sendMessage("§f[§b彩虹编辑§f] 配置文件已重新加载");
                 return true;
 
             case "?":
-                sender.sendMessage("§7[§b彩虹编辑§7] 符号指令帮助:");
-                sender.sendMessage("§7必要参数: <?>, 可选必要参数: <?/?>, 非必要参数: [?], 可选非必要参数: [?/?]");
-                sender.sendMessage("§7  |- §b/re ! <String> §7- 修改名字");
-                sender.sendMessage("§7  |- §b/re + <String> §7- 添加新的行");
-                sender.sendMessage("§7  |- §b/re @ <line> <String> §7- 修改指定行");
-                sender.sendMessage("§7  |- §b/re > <line> <String> §7- 在指定行前插入一行");
-                sender.sendMessage("§7  |- §b/re < <line> <String> §7- 在指定行后插入一行");
-                sender.sendMessage("§7  |- §b/re # <line> <oldString> <newString> §7- 替换指定行中的字符");
-                sender.sendMessage("§7  |- §b/re - <line> §7- 删除指定行");
-                sender.sendMessage("§7  |- §b/re % §7- 清除所有行");
-                sender.sendMessage("§7  |- §b/re $ §7- 进入预览模式");
-                sender.sendMessage("§7  |- §b/re . §7- 应用更改");
-                sender.sendMessage("§7  |- §b/re : §7- 取消更改并退出预览模式");
+                sender.sendMessage("§f[§b彩虹编辑§f] 符号指令帮助:");
+                sender.sendMessage("§f必要参数: <?>, 可选必要参数: <?/?>, 非必要参数: [?], 可选非必要参数: [?/?]");
+                sender.sendMessage("§7  |- §b/re ! <String> §f- 修改名字");
+                sender.sendMessage("§7  |- §b/re + <String> §f- 添加新的行");
+                sender.sendMessage("§7  |- §b/re @ <line> <String> §f- 修改指定行");
+                sender.sendMessage("§7  |- §b/re > <line> <String> §f- 在指定行前插入一行");
+                sender.sendMessage("§7  |- §b/re < <line> <String> §f- 在指定行后插入一行");
+                sender.sendMessage("§7  |- §b/re # <line> <oldString> <newString> §f- 替换指定行中的字符");
+                sender.sendMessage("§7  |- §b/re - <line> §f- 删除指定行");
+                sender.sendMessage("§7  |- §b/re % §f- 清除所有行");
+                sender.sendMessage("§7  |- §b/re $ §f- 进入预览模式");
+                sender.sendMessage("§7  |- §b/re . §f- 应用更改");
+                sender.sendMessage("§7  |- §b/re : §f- 取消更改并退出预览模式");
                 return true;
             case "help":
-                sender.sendMessage("§7[§b彩虹编辑§7] 文字指令帮助:");
-                sender.sendMessage("§7必要参数: <?>, 可选必要参数: <?/?>, 非必要参数: [?], 可选非必要参数: [?/?]");
-                sender.sendMessage("§7  |- §b/re name <String> §7- 修改名字");
-                sender.sendMessage("§7  |- §b/re add <String> §7- 添加新的行");
-                sender.sendMessage("§7  |- §b/re set <line> <String> §7- 修改指定行");
-                sender.sendMessage("§7  |- §b/re before <line> <String> §7- 在指定行前插入一行");
-                sender.sendMessage("§7  |- §b/re after <line> <String> §7- 在指定行后插入一行");
-                sender.sendMessage("§7  |- §b/re replace <line> <oldString> <newString> §7- 替换指定行中的字符");
-                sender.sendMessage("§7  |- §b/re remove <line> §7- 删除指定行");
-                sender.sendMessage("§7  |- §b/re preview §7- 进入预览模式");
-                sender.sendMessage("§7  |- §b/re clear §7- 清除所有的Lore");
-                sender.sendMessage("§7  |- §b/re apply §7- 应用更改");
-                sender.sendMessage("§7  |- §b/re cancel §7- 取消更改并退出预览模式");
+                sender.sendMessage("§f[§b彩虹编辑§f] 文字指令帮助:");
+                sender.sendMessage("§f必要参数: <?>, 可选必要参数: <?/?>, 非必要参数: [?], 可选非必要参数: [?/?]");
+                sender.sendMessage("§7  |- §b/re name <String> §f- 修改名字");
+                sender.sendMessage("§7  |- §b/re add <String> §f- 添加新的行");
+                sender.sendMessage("§7  |- §b/re set <line> <String> §f- 修改指定行");
+                sender.sendMessage("§7  |- §b/re before <line> <String> §f- 在指定行前插入一行");
+                sender.sendMessage("§7  |- §b/re after <line> <String> §f- 在指定行后插入一行");
+                sender.sendMessage("§7  |- §b/re replace <line> <oldString> <newString> §f- 替换指定行中的字符");
+                sender.sendMessage("§7  |- §b/re remove <line> §f- 删除指定行");
+                sender.sendMessage("§7  |- §b/re preview §f- 进入预览模式");
+                sender.sendMessage("§7  |- §b/re clear §f- 清除所有的Lore");
+                sender.sendMessage("§7  |- §b/re apply §f- 应用更改");
+                sender.sendMessage("§7  |- §b/re cancel §f- 取消更改并退出预览模式");
                 return true;
 
             default:
-                sender.sendMessage("§7[§b彩虹编辑§7] 这是一个不存在的命令或拼写错误: " + args[0]);
-                sender.sendMessage("§7  |- 输入 §b/re <help/?> §7查看帮助");
+                sender.sendMessage("§f[§b彩虹编辑§f] 这是一个不存在的命令或拼写错误: " + args[0]);
+                sender.sendMessage("§7  |- 输入 §b/re <help/?> §f查看帮助");
                 return true;
         }
     }

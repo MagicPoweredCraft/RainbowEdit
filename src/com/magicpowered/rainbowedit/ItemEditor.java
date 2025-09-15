@@ -1,4 +1,4 @@
-package com.magicpowered.rainbowseries;
+package com.magicpowered.rainbowedit;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -15,7 +15,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
-import java.util.function.Supplier;
 
 public class ItemEditor implements Listener {
 
@@ -190,7 +189,7 @@ public class ItemEditor implements Listener {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         // 检查玩家手中是否有物品
-        if (item == null || item.getType() == Material.AIR) {
+        if (item.getType() == Material.AIR) {
             player.sendMessage(fileManager.getMessage("no-item-in-hand"));
             return;
         }
@@ -254,7 +253,7 @@ public class ItemEditor implements Listener {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         // 检查玩家手中是否有物品
-        if (item == null || item.getType() == Material.AIR) {
+        if (item.getType() == Material.AIR) {
             player.sendMessage(fileManager.getMessage("no-item-in-hand"));
             return;
         }

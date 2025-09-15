@@ -9,8 +9,4 @@
 - 无
 
 ## 兼容性
-- Minecraft Bukkit 1.7 或更高版本。
-- 在所有 Forge+Bukkit 混合端上均未测试。
-
-## 更多
-- （在编）更多内容与配置细节，参见 https://wiki.magicpowered.cn/RainbowSeries/RainbowEdit/Index
+- Minecraft Bukkit 1.12 或更高版本。

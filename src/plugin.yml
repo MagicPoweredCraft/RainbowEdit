@@ -1,8 +1,8 @@
 name: RainbowEdit
-main: com.magicpowered.rainbowseries.RainbowEdit
-version: 24.0.1.1
+main: com.magicpowered.rainbowedit.RainbowEdit
+version: 1.0.0.1
 author: JLING
-api-version: 1.13
+api-version: 1.12
 
 commands:
   re:
