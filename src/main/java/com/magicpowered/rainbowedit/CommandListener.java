@@ -13,11 +13,6 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * 使用 LinCommand 注册 RainbowEdit 的所有命令。
- * 在插件主类 onEnable 中调用：
- * new CommandListener(plugin, fileManager, itemEditor).register(registry);
- */
 public class CommandListener {
 
     private final RainbowEdit plugin;
