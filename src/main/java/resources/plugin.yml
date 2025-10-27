@@ -1,8 +1,9 @@
 name: RainbowEdit
 main: com.magicpowered.rainbowedit.RainbowEdit
-version: 1.0.0.1
+version: '${project.version}'
 author: JLING
-api-version: 1.12
+api-version: 1.13
+description: RainbowEdit plugin Edition by linlang
 
 commands:
   re:
@@ -13,7 +14,7 @@ commands:
       - rainbowe
       - redit
       - re
-    tab-completions: com.magicpowered.rainbowedit.CommandListener
+    tab-completions: com.rainbowedit.magicpowered.CommandListener
 
 permissions:
   rainbowedit.use.name:

@@ -1,5 +1,7 @@
 package com.magicpowered.rainbowedit;
 
+import adapter.linlang.bukkit.common.Messenger;
+import com.magicpowered.rainbowedit.lang.LangKeys;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -19,13 +21,15 @@ import java.util.*;
 public class ItemEditor implements Listener {
 
     private final RainbowEdit plugin;
-    private FileManager fileManager;
+    private final LangKeys lang;
+    private Messenger ms;
 
     private Map<UUID, ItemStack> previewBackup = new HashMap<>();
 
-    public ItemEditor(RainbowEdit plugin, FileManager fileManager) {
-        this.fileManager = fileManager;
+    public ItemEditor(RainbowEdit plugin) {
         this.plugin = plugin;
+        lang = plugin.getLang();
+        ms = plugin.getMs();
     }
 
     /**
@@ -37,7 +41,7 @@ public class ItemEditor implements Listener {
     public void setName(Player player, String name) {
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item.getType() == Material.AIR) {
-            player.sendMessage(fileManager.getMessage("no-item-in-hand"));
+            ms.sendKey(player, lang.message.noItemInHand);
             return;
         }
 
@@ -45,7 +49,7 @@ public class ItemEditor implements Listener {
         if (meta != null) {
             meta.setDisplayName(name);
             item.setItemMeta(meta);
-            player.sendMessage(fileManager.getMessage("name-set-successfully").replace("%new_name%", name));
+            ms.sendKey(player, lang.message.nameSetup,"name", name);
         }
     }
 
@@ -58,7 +62,7 @@ public class ItemEditor implements Listener {
     public void addLore(Player player, String loreToAdd) {
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item.getType() == Material.AIR) {
-            player.sendMessage(fileManager.getMessage("no-item-in-hand"));
+            ms.sendKey(player, lang.message.noItemInHand);
             return;
         }
 
@@ -70,7 +74,7 @@ public class ItemEditor implements Listener {
             lore.add(loreToAdd);
             meta.setLore(lore);
             item.setItemMeta(meta);
-            player.sendMessage(fileManager.getMessage("lore-add-successfully").replace("%add_str%", loreToAdd));
+            ms.sendKey(player, lang.message.loreAdded, "lore", loreToAdd);
         }
     }
 
@@ -86,7 +90,7 @@ public class ItemEditor implements Listener {
 
         // 检查玩家手中是否有物品
         if (item.getType() == Material.AIR) {
-            player.sendMessage(fileManager.getMessage("no-item-in-hand"));
+            ms.sendKey(player, lang.message.noItemInHand);
             return;
         }
 
@@ -96,13 +100,13 @@ public class ItemEditor implements Listener {
 
             // 检查物品是否有Lore
             if (lore == null || lore.isEmpty()) {
-                player.sendMessage(fileManager.getMessage("item-has-no-lore"));
+                ms.sendKey(player, lang.message.itemHasNoLore);
                 return;
             }
 
             // 检查指定的lore行是否存在
             if (lineToSet < 1 || lineToSet > lore.size()) {
-                player.sendMessage(fileManager.getMessage("invalid-lore-line").replace("%line_invalid%", Integer.toString(lineToSet)));
+                ms.sendKey(player, lang.message.invalidLoreLine, "line_invalid", lineToSet);
                 return;
             }
 
@@ -110,9 +114,7 @@ public class ItemEditor implements Listener {
             lore.set(lineToSet - 1, newLore); // List是0基索引，而我们的行号是1基
             meta.setLore(lore);
             item.setItemMeta(meta);
-            player.sendMessage(fileManager.getMessage("lore-line-set")
-                    .replace("%set_line%", Integer.toString(lineToSet))
-                    .replace("%set_new%", newLore));
+            ms.sendKey(player, lang.message.loreLineSetup, "line", lineToSet, "lore", newLore);
         }
     }
 
@@ -143,7 +145,7 @@ public class ItemEditor implements Listener {
 
         // 检查玩家手中是否有物品
         if (item.getType() == Material.AIR) {
-            player.sendMessage(fileManager.getMessage("no-item-in-hand"));
+            ms.sendKey(player, lang.message.noItemInHand);
             return;
         }
 
@@ -158,7 +160,7 @@ public class ItemEditor implements Listener {
 
             // 检查插入的行是否在有效范围内
             if (before && (line < 1 || line > lore.size() + 1) || !before && (line < 1 || line > lore.size())) {
-                player.sendMessage(fileManager.getMessage("invalid-lore-line").replace("%line_invalid%", String.valueOf(line)));
+                ms.sendKey(player, lang.message.invalidLoreLine, "line", line);
                 return;
             }
 
@@ -171,11 +173,9 @@ public class ItemEditor implements Listener {
             meta.setLore(lore);
             item.setItemMeta(meta);
 
-            String mode = fileManager.getConfig().getString("lore-insert-before", "前").replace("&", "§");
-            if (!before) mode = fileManager.getConfig().getString("lore-insert-after", "后").replace("&", "§");
-            player.sendMessage(fileManager.getMessage("lore-line-inserted").replace("%insert_mode%", mode)
-                                                                                .replace("%insert_line%", String.valueOf(line))
-                                                                                .replace("%insert_str%", loreToInsert));
+            String mode = "前";
+            if (!before) mode = "后";
+            ms.sendKey(player, lang.message.loreLineInserted,"insert_mode", mode, " line", line, "lore", loreToInsert);
         }
     }
 
@@ -190,7 +190,7 @@ public class ItemEditor implements Listener {
 
         // 检查玩家手中是否有物品
         if (item.getType() == Material.AIR) {
-            player.sendMessage(fileManager.getMessage("no-item-in-hand"));
+            ms.sendKey(player, lang.message.noItemInHand);
             return;
         }
 
@@ -200,13 +200,13 @@ public class ItemEditor implements Listener {
 
             // 检查物品是否有Lore
             if (lore == null || lore.isEmpty()) {
-                player.sendMessage(fileManager.getMessage("item-has-no-lore"));
+                ms.sendKey(player, lang.message.itemHasNoLore);
                 return;
             }
 
             // 检查指定的lore行是否存在
             if (lineToRemove < 1 || lineToRemove > lore.size()) {
-                player.sendMessage(fileManager.getMessage("invalid-lore-line").replace("%line_invalid%", Integer.toString(lineToRemove)));
+                ms.sendKey(player, lang.message.invalidLoreLine, "line", lineToRemove);
                 return;
             }
 
@@ -214,7 +214,7 @@ public class ItemEditor implements Listener {
             lore.remove(lineToRemove - 1); // List是0基索引，而我们的行号是1基
             meta.setLore(lore);
             item.setItemMeta(meta);
-            player.sendMessage(fileManager.getMessage("lore-line-removed").replace("%remove_line%", Integer.toString(lineToRemove)));
+            ms.sendKey(player, lang.message.loreLineRemoved, "lore", lineToRemove);
         }
     }
 
@@ -228,7 +228,7 @@ public class ItemEditor implements Listener {
 
         // 检查玩家手中是否有物品
         if (item.getType() == Material.AIR) {
-            player.sendMessage(fileManager.getMessage("no-item-in-hand"));
+            ms.sendKey(player, lang.message.noItemInHand);
             return;
         }
 
@@ -237,7 +237,7 @@ public class ItemEditor implements Listener {
             // 移除所有lore
             meta.setLore(new ArrayList<>());
             item.setItemMeta(meta);
-            player.sendMessage(fileManager.getMessage("lore-cleared-successfully"));
+            ms.sendKey(player, lang.message.loreLineRemoved);
         }
     }
 
@@ -254,7 +254,7 @@ public class ItemEditor implements Listener {
 
         // 检查玩家手中是否有物品
         if (item.getType() == Material.AIR) {
-            player.sendMessage(fileManager.getMessage("no-item-in-hand"));
+            ms.sendKey(player, lang.message.noItemInHand);
             return;
         }
 
@@ -264,20 +264,20 @@ public class ItemEditor implements Listener {
 
             // 检查物品是否有Lore
             if (lore == null || lore.isEmpty()) {
-                player.sendMessage(fileManager.getMessage("item-has-no-lore"));
+                ms.sendKey(player, lang.message.itemHasNoLore);
                 return;
             }
 
             // 检查指定的lore行是否存在
             if (line < 1 || line > lore.size()) {
-                player.sendMessage(fileManager.getMessage("invalid-lore-line").replace("%line_invalid%", Integer.toString(line)));
+                ms.sendKey(player, lang.message.invalidLoreLine, "line", line);
                 return;
             }
 
             // 检查OldString是否存在于指定的lore行
             String currentLine = lore.get(line - 1);
             if (!currentLine.contains(oldString)) {
-                player.sendMessage(fileManager.getMessage("old-string-not-found").replace("%replace_line%", String.valueOf(line)).replace("%replace_old%", oldString));
+                ms.sendKey(player, lang.message.oldStringNotFound, "old_lore", oldString);
                 return;
             }
 
@@ -286,10 +286,7 @@ public class ItemEditor implements Listener {
             lore.set(line - 1, replacedLine);
             meta.setLore(lore);
             item.setItemMeta(meta);
-            player.sendMessage(fileManager.getMessage("lore-replaced-successfully")
-                            .replace("%replace_line%", String.valueOf(line))
-                    .replace("%replace_old%", oldString)
-                    .replace("%replace_new%", newString));
+            ms.sendKey(player, lang.message.loreReplaced, "line", line, "old_lore", oldString, "new_lore", newString);
         }
     }
 
@@ -322,14 +319,14 @@ public class ItemEditor implements Listener {
      */
     public void enterPreviewMode(Player player) {
         if (isInPreviewMode(player)) {
-            player.sendMessage(fileManager.getMessage("now-in-preview-mode"));
+            ms.sendKey(player, lang.message.previewIsDisable);
             return;
         }
 
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item.getType() == Material.AIR) {
-            player.sendMessage(fileManager.getMessage("no-item-in-hand"));
+            ms.sendKey(player, lang.message.noItemInHand);
             return;
         }
 
@@ -337,24 +334,23 @@ public class ItemEditor implements Listener {
         ItemStack backup = item.clone();
         previewBackup.put(player.getUniqueId(), backup);
 
-        player.sendMessage(fileManager.getMessage("entered-preview-mode"));
+        ms.sendKey(player, lang.message.previewEnter);
 
         int slot = getHotbarSlot(player, item);
 
         if (slot == -1) {
-            player.sendMessage(fileManager.getMessage("item-not-in-hotbar"));
+            ms.sendKey(player, lang.message.noItemInHotbar);
             return;
         }
 
         previewItemSlots.put(player.getUniqueId(), slot);
 
         int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
-            String message = fileManager.getActionBarMessage(slot);
+            String message = lang.previewUI.frames.get(slot);
             sendActionBar(player, message);
         }, 0L, 20L);
 
         previewTaskIds.put(player.getUniqueId(), taskId);
-
     }
 
     /**
@@ -364,7 +360,7 @@ public class ItemEditor implements Listener {
      */
     public void applyPreviewChanges(Player player) {
         if (!isInPreviewMode(player)) {
-            player.sendMessage(fileManager.getMessage("not-in-preview-mode"));
+            ms.sendKey(player, lang.message.previewIsDisable);
             return;
         }
 
@@ -377,7 +373,7 @@ public class ItemEditor implements Listener {
 
         // 清理
         cleanupPreviewMode(player);
-        player.sendMessage(fileManager.getMessage("applied-preview-changes"));
+        ms.sendKey(player, lang.message.appliedPreviewChanges);
     }
 
     /**
@@ -387,7 +383,7 @@ public class ItemEditor implements Listener {
      */
     public void cancelPreviewChanges(Player player) {
         if (!isInPreviewMode(player)) {
-            player.sendMessage(fileManager.getMessage("not-in-preview-mode"));
+            ms.sendKey(player, lang.message.previewIsDisable);
             return;
         }
 
@@ -400,7 +396,7 @@ public class ItemEditor implements Listener {
 
         // 清理
         cleanupPreviewMode(player);
-        player.sendMessage(fileManager.getMessage("canceled-preview-changes"));
+        ms.sendKey(player, lang.message.canceledPreviewChanges);
     }
 
     private void cleanupPreviewMode(Player player) {
@@ -474,7 +470,7 @@ public class ItemEditor implements Listener {
             // 如果玩家尝试从预览模式物品的快捷栏位置操作物品，取消事件
             if (event.getSlot() == slot - 1) {
                 event.setCancelled(true);
-                player.sendMessage(fileManager.getMessage("cannot-move-preview-item"));
+                ms.sendKey(player, lang.message.cannotMovePreviewItem);
             }
         }
     }
@@ -495,7 +491,7 @@ public class ItemEditor implements Listener {
             // 检查玩家是否尝试丢弃锁定格子中的物品
             if (event.getPlayer().getInventory().getHeldItemSlot() == slot - 1) { // 格子位置从0开始计算
                 event.setCancelled(true);
-                player.sendMessage(fileManager.getMessage("cannot-drop-preview-item"));
+                ms.sendKey(player, lang.message.cannotDropPreviewItem);
             }
         }
     }
