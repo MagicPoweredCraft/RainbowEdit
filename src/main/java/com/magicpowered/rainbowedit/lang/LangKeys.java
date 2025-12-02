@@ -1,8 +1,8 @@
 package com.magicpowered.rainbowedit.lang;
 
-import api.linlang.file.annotations.Comment;
-import api.linlang.file.annotations.I18nComment;
-import api.linlang.file.annotations.NamingStyle;
+
+import api.linlang.file.file.annotations.I18nComment;
+import api.linlang.file.file.annotations.NamingStyle;
 
 import java.util.LinkedHashMap;
 

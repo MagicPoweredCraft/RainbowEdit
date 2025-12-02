@@ -1,8 +1,8 @@
 package com.magicpowered.rainbowedit.lang;
 
 
-import api.linlang.file.annotations.NamingStyle;
-import api.linlang.file.implement.LocaleProvider;
+import api.linlang.file.file.annotations.NamingStyle;
+import api.linlang.file.file.implement.LocaleProvider;
 
 @NamingStyle(NamingStyle.Style.KEBAB)
 public final class ZhCN implements LocaleProvider<LangKeys> {

@@ -1,6 +1,6 @@
 package com.magicpowered.rainbowedit;
 
-import adapter.linlang.bukkit.common.Messenger;
+import api.linlang.messenger.LinMessenger;
 import com.magicpowered.rainbowedit.lang.LangKeys;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -22,7 +22,7 @@ public class ItemEditor implements Listener {
 
     private final RainbowEdit plugin;
     private final LangKeys lang;
-    private Messenger ms;
+    private LinMessenger ms;
 
     private Map<UUID, ItemStack> previewBackup = new HashMap<>();
 

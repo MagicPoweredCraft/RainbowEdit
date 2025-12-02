@@ -1,10 +1,11 @@
 package com.magicpowered.rainbowedit.config;
 
-import api.linlang.file.annotations.Comment;
-import api.linlang.file.annotations.ConfigFile;
-import api.linlang.file.annotations.ConfigVersion;
-import api.linlang.file.annotations.NamingStyle;
-import api.linlang.file.types.FileType;
+
+import api.linlang.file.file.FileType;
+import api.linlang.file.file.annotations.Comment;
+import api.linlang.file.file.annotations.ConfigFile;
+import api.linlang.file.file.annotations.ConfigVersion;
+import api.linlang.file.file.annotations.NamingStyle;
 
 @ConfigFile(name="config", path="", format= FileType.YAML)
 @ConfigVersion(1)

@@ -1,8 +1,7 @@
 package com.magicpowered.rainbowedit.lang;
 
-
-import api.linlang.file.implement.LocaleProvider;
-import api.linlang.file.annotations.NamingStyle;
+import api.linlang.file.file.annotations.NamingStyle;
+import api.linlang.file.file.implement.LocaleProvider;
 
 @NamingStyle(NamingStyle.Style.KEBAB)
 public final class EnGB implements LocaleProvider<LangKeys> {
@@ -29,6 +28,7 @@ public final class EnGB implements LocaleProvider<LangKeys> {
         k.message.cannotMovePreviewItem = "&fYou cannot move the preview item while in preview mode";
         k.message.cannotDropPreviewItem = "&fYou cannot drop the preview item while in preview mode";
         k.message.noItemInHotbar = "&fYou have no item in your hotbar";
+        k.message.reloaded = "reloaded all plugin files";
 
         k.previewUI.frames.put(1 , "&bEditing &7[&c&l↓&7---------------------------] &bPreview Mode");
         k.previewUI.frames.put(2 , "&bEditing &7[----&c&l↓&7-----------------------] &bPreview Mode");

@@ -1,16 +1,10 @@
 package com.magicpowered.rainbowedit;
 
-import adapter.linlang.bukkit.LinlangBukkitBootstrap;
-import adapter.linlang.bukkit.audit.common.BukkitAuditProvider;
-import adapter.linlang.bukkit.banner.BukkitBanner;
-import adapter.linlang.bukkit.common.Messenger;
-import adapter.linlang.bukkit.file.common.file.BukkitFsHotReloader;
-import adapter.linlang.bukkit.file.common.file.BukkitPathResolver;
-import api.linlang.banner.AsciiFont;
-import api.linlang.banner.BannerOptions;
-import api.linlang.file.called.LinFile;
-import api.linlang.file.service.ConfigService;
-import api.linlang.file.service.LangService;
+import api.linlang.audit.LinLog;
+import api.linlang.banner.LinBanner;
+import api.linlang.messenger.LinMessenger;
+import api.linlang.runtime.Lin;
+import api.linlang.runtime.Linlang;
 import com.magicpowered.rainbowedit.config.Config;
 import com.magicpowered.rainbowedit.lang.EnGB;
 import com.magicpowered.rainbowedit.lang.LangKeys;
@@ -30,7 +24,6 @@ import java.util.List;
 
 public class RainbowEdit extends JavaPlugin implements Listener {
 
-    private CommandListener commandListener;
     @Getter
     private ItemEditor itemEditor;
     @Getter
@@ -38,69 +31,51 @@ public class RainbowEdit extends JavaPlugin implements Listener {
     @Getter
     private LangKeys lang;
     @Getter
-    private ConfigService configService;
+    private LinMessenger ms;
     @Getter
-    private LangService langService;
-
-    @Getter
-    private Messenger ms;
-
-    LinlangBukkitBootstrap bootstrap;
+    private Linlang lin;
 
     @Override
     public void onEnable() {
         try {
-            bootstrap = LinlangBukkitBootstrap.install(this);
+            lin = Lin.init(this);
+            cfg = lin.linFile().config().bind(Config.class);
+            lang = lin.linFile().language().bind(
+                    LangKeys.class,
+                    cfg.language,
+                    List.of(
+                            new ZhCN(),
+                            new EnGB()
+                    ));
 
-            BukkitPathResolver resolver = new BukkitPathResolver(this);
+            lin.settings()
+                    .initialLocale(cfg.language)
+                    .fixedPrefix(lang.message.prefix);
 
-            configService = LinFile.services().config();
-            langService = LinFile.services().lang();
 
-            cfg = configService.bind(Config.class);
-            lang = langService.bind(LangKeys.class, cfg.language, List.of(
-                    new ZhCN(),
-                    new EnGB()
-            ));
-
-            bootstrap.withCommandPrefix(lang.message.prefix);
-            bootstrap.withInitialLanguage(cfg.language);
-            bootstrap.commands.withPreferredLocaleTag(cfg.language);
-
-            ms = new Messenger(langService::tr);
+            ms = lin.linMessenger();
             ms.withPrefix(lang.message.prefix);
+
 
             itemEditor = new ItemEditor(this);
 
-            new CommandListener(this).register(bootstrap.commands);
-
-            BukkitFsHotReloader hot = new BukkitFsHotReloader(this);
-
-//            Path root = resolver.root();
-//            hot.watchConfigDir(root.resolve("config"), () -> {
-//                cfg = configService.bind(Config.class);
-//            });
-//            hot.watchLangDir(root.resolve("lang"), () -> {
-//                langService.bind(LangKeys.class, cfg.language, List.of(new ZhCN(), new EnGB()));
-//                ms = new Messenger(langService::tr);
-//            });
+            new CommandListener(this).register(lin.linCommand());
 
             getServer().getPluginManager().registerEvents(this, this);
             getServer().getPluginManager().registerEvents(itemEditor, this);
 
             PluginDescriptionFile desc = getDescription();
 
-            BannerOptions options = BannerOptions.builder()
+            LinBanner.printWithLogs(LinBanner.options()
                     .initials("MP : RS")
-                    .team("妙控动力","MagicPowered")
+                    .team("妙控动力", "MagicPowered")
                     .series("彩虹系列", "RainbowSeries")
                     .plugin("彩虹编辑", desc.getName(), desc.getVersion())
                     .developers(getDescription().getAuthors())
                     .site("https://magicpowered.cn")
-                    .build();
-            BukkitBanner.printWithLogs(options);
+                    .build());
 
-            BukkitAuditProvider.flushStartupToConsole();
+            LinLog.flushStartupToConsole();
 
 
         } catch (Exception e) {
@@ -111,8 +86,9 @@ public class RainbowEdit extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        configService.saveAll();
-        langService.saveAll();
+        lin.linFile().config().saveAll();
+        lin.linFile().language().saveAll();
+        lin.close();
         Bukkit.getServer().getLogger().info("[彩虹编辑] 插件已卸载，再会!");
     }
 
@@ -129,10 +105,24 @@ public class RainbowEdit extends JavaPlugin implements Listener {
     }
 
 
+    /**
+     * 刷新琳琅服务
+     * <p>在</p>
+     */
     public void reload() {
-        cfg = configService.bind(Config.class);
-        lang = langService.bind(LangKeys.class, cfg.language, List.of(new ZhCN(), new EnGB()));
-        bootstrap.withCommandPrefix(lang.message.prefix);
-        bootstrap.reload();
+        cfg = lin.linFile().config().bind(Config.class);
+        lang = lin.linFile().language().bind(
+                LangKeys.class,
+                cfg.language,
+                List.of(
+                        new ZhCN(),
+                        new EnGB()
+                )
+        );
+        lin.settings()
+                .initialLocale(cfg.language)
+                .fixedPrefix(lang.message.prefix);
+
+        lin.reload();
     }
 }

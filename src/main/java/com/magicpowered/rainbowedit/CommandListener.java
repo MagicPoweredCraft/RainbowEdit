@@ -1,11 +1,10 @@
 package com.magicpowered.rainbowedit;
 
-import adapter.linlang.bukkit.common.Messenger;
 import api.linlang.command.LinCommand;
 import api.linlang.command.LinCommand.Desc;
 import api.linlang.command.LinCommand.ExecTarget;
 import api.linlang.command.LinCommand.Permission;
-import api.linlang.file.service.LangService;
+import api.linlang.messenger.LinMessenger;
 import com.magicpowered.rainbowedit.lang.LangKeys;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,7 +17,7 @@ public class CommandListener {
     private final RainbowEdit plugin;
     private final ItemEditor itemEditor;
     private final LangKeys lang;
-    private final Messenger ms;
+    private final LinMessenger ms;
 
     public CommandListener(RainbowEdit plugin) {
         this.plugin = plugin;

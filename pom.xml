@@ -13,7 +13,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <revision>1.0.3.2-SNAPSHOT</revision>
+        <revision>1.0.4.5-SNAPSHOT</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -96,11 +96,6 @@
         <dependency>
             <groupId>me.jling</groupId>
             <artifactId>linlang-api</artifactId>
-            <version>${revision}</version>
-        </dependency>
-        <dependency>
-            <groupId>me.jling</groupId>
-            <artifactId>linlang-adapter-bukkit</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>
