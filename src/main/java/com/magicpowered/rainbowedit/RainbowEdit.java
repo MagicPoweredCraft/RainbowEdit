@@ -19,7 +19,6 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.nio.file.Path;
 import java.util.List;
 
 public class RainbowEdit extends JavaPlugin implements Listener {
@@ -56,7 +55,6 @@ public class RainbowEdit extends JavaPlugin implements Listener {
             ms = lin.linMessenger();
             ms.withPrefix(lang.message.prefix);
 
-
             itemEditor = new ItemEditor(this);
 
             new CommandListener(this).register(lin.linCommand());
@@ -66,14 +64,14 @@ public class RainbowEdit extends JavaPlugin implements Listener {
 
             PluginDescriptionFile desc = getDescription();
 
-            LinBanner.printWithLogs(LinBanner.options()
-                    .initials("MP : RS")
-                    .team("妙控动力", "MagicPowered")
-                    .series("彩虹系列", "RainbowSeries")
-                    .plugin("彩虹编辑", desc.getName(), desc.getVersion())
-                    .developers(getDescription().getAuthors())
-                    .site("https://magicpowered.cn")
-                    .build());
+//            LinBanner.printWithLogs(LinBanner.options()
+//                    .initials("MP : RS")
+//                    .team("妙控动力", "MagicPowered")
+//                    .series("彩虹系列", "RainbowSeries")
+//                    .plugin("彩虹编辑", desc.getName(), desc.getVersion())
+//                    .developers(getDescription().getAuthors())
+//                    .site("https://magicpowered.cn")
+//                    .build());
 
             LinLog.flushStartupToConsole();
 

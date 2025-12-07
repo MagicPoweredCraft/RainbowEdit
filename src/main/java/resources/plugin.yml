@@ -4,6 +4,8 @@ version: '${project.version}'
 author: JLING
 api-version: 1.13
 description: RainbowEdit plugin Edition by linlang
+depend:
+  - LinlangRuntimeBukkit
 
 commands:
   re:
