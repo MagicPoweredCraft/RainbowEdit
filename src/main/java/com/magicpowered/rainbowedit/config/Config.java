@@ -24,4 +24,6 @@ public class Config {
             "English (UK) = en_GB"
     })
     public String language = "zh_CN";
+
+    public String testing = "testing1";
 }

@@ -1,6 +1,7 @@
 package com.magicpowered.rainbowedit;
 
 import api.linlang.audit.LinLog;
+import api.linlang.audit.LinLogger;
 import api.linlang.banner.LinBanner;
 import api.linlang.messenger.LinMessenger;
 import api.linlang.runtime.Lin;
@@ -33,6 +34,7 @@ public class RainbowEdit extends JavaPlugin implements Listener {
     private LinMessenger ms;
     @Getter
     private Linlang lin;
+    private static LinLogger LOG = LinLog.getLogger(RainbowEdit.class);
 
     @Override
     public void onEnable() {
@@ -47,10 +49,10 @@ public class RainbowEdit extends JavaPlugin implements Listener {
                             new EnGB()
                     ));
 
-            lin.settings()
-                    .initialLocale(cfg.language)
-                    .fixedPrefix(lang.message.prefix);
+            LOG.startup("此日志应在服务器完成启动时打印");
 
+            lin.settings().fixedPrefix(lang.message.prefix).apply();
+            lin.parameters().initialLocale(cfg.language).apply();
 
             ms = lin.linMessenger();
             ms.withPrefix(lang.message.prefix);
@@ -64,17 +66,12 @@ public class RainbowEdit extends JavaPlugin implements Listener {
 
             PluginDescriptionFile desc = getDescription();
 
-//            LinBanner.printWithLogs(LinBanner.options()
-//                    .initials("MP : RS")
-//                    .team("妙控动力", "MagicPowered")
-//                    .series("彩虹系列", "RainbowSeries")
-//                    .plugin("彩虹编辑", desc.getName(), desc.getVersion())
-//                    .developers(getDescription().getAuthors())
-//                    .site("https://magicpowered.cn")
-//                    .build());
-
-            LinLog.flushStartupToConsole();
-
+            LinBanner.print(LinBanner.options()
+                    .initials("MP : RS")
+                    .plugin("彩虹编辑", desc.getName(), desc.getVersion())
+                    .developers(getDescription().getAuthors())
+                    .site(null)
+                    .build());
 
         } catch (Exception e) {
             Bukkit.getServer().getLogger().info("[彩虹编辑] 启动失败");
@@ -105,22 +102,26 @@ public class RainbowEdit extends JavaPlugin implements Listener {
 
     /**
      * 刷新琳琅服务
-     * <p>在</p>
      */
     public void reload() {
-        cfg = lin.linFile().config().bind(Config.class);
-        lang = lin.linFile().language().bind(
-                LangKeys.class,
-                cfg.language,
-                List.of(
-                        new ZhCN(),
-                        new EnGB()
-                )
-        );
-        lin.settings()
-                .initialLocale(cfg.language)
-                .fixedPrefix(lang.message.prefix);
+//        cfg = lin.linFile().config().bind(Config.class);
+        lin.linFile().config().reload();
+        lin.linFile().language().setLocale(cfg.language);
+        lin.linFile().language().reload();
+//        lang = lin.linFile().language().bind(
+//                LangKeys.class,
+//                cfg.language,
+//                List.of(
+//                        new ZhCN(),
+//                        new EnGB()
+//                )
+//        );
+        LOG.info("lang.message.prefix={}", lang.message.prefix);
+        ms.withPrefix(lang.message.prefix);
 
-        lin.reload();
+        lin.settings().fixedPrefix(lang.message.prefix).apply();
+        lin.parameters().initialLocale(cfg.language).apply();
+
+        new CommandListener(this).register(lin.linCommand());
     }
 }

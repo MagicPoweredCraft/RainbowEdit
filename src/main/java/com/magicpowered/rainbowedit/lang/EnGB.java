@@ -8,7 +8,7 @@ public final class EnGB implements LocaleProvider<LangKeys> {
     public String locale(){ return "en_GB"; }
     public void define(LangKeys k) {
 
-        k.message.prefix = "§7[§bRainbowEdit§7]";
+        k.message.prefix = "§7[§bRainbowEdit§7] ";
         k.message.noItemInHand = "&fYou have no item in your main hand";
         k.message.itemHasNoLore = "&fThis item has no lore";
         k.message.nameSetup = "&fSuccessfully set the item name to {name}";

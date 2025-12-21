@@ -6,14 +6,14 @@
 
     <groupId>com.magicpowered</groupId>
     <artifactId>RainbowEdit</artifactId>
-    <version>1.0.1.0-SNAPSHOT</version>
+    <version>1.0.1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>rainbowedit</name>
 
     <properties>
         <java.version>17</java.version>
-        <revision>1.0.4.6-SNAPSHOT</revision>
+        <revision>1.1.0.2-SNAPSHOT</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

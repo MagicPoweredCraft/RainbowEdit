@@ -5,6 +5,7 @@ import api.linlang.command.LinCommand.Desc;
 import api.linlang.command.LinCommand.ExecTarget;
 import api.linlang.command.LinCommand.Permission;
 import api.linlang.messenger.LinMessenger;
+import com.magicpowered.rainbowedit.config.Config;
 import com.magicpowered.rainbowedit.lang.LangKeys;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,14 +17,10 @@ public class CommandListener {
 
     private final RainbowEdit plugin;
     private final ItemEditor itemEditor;
-    private final LangKeys lang;
-    private final LinMessenger ms;
 
     public CommandListener(RainbowEdit plugin) {
         this.plugin = plugin;
         this.itemEditor = plugin.getItemEditor();
-        this.ms = plugin.getMs();
-        this.lang = plugin.getLang();
     }
 
     private static String normalize(String raw) {
@@ -350,13 +347,33 @@ public class CommandListener {
                 Permission.perms("rainbowedit.lore"), ExecTarget.PLAYER, Desc.desc("zh_CN", "取消更改并退出预览模式", "en_GB", "cancel changes and exit preview mode")
         );
 
+        registry.register(
+                "re language",
+                ctx -> {
+                    plugin.getMs().sendKey(ctx.sender(), plugin.getCfg().language);
+                    plugin.getLogger().info(plugin.getCfg().language);
+                },
+                Permission.perms("rainbowedit.language"), ExecTarget.ALL, Desc.desc("zh_CN", "查看当前语言", "en_GB", "view current language")
+        );
+
+        registry.register(
+                "re testing",
+                ctx -> {
+                    plugin.getMs().sendKey(ctx.sender(), plugin.getCfg().testing);
+                    plugin.getLogger().info(plugin.getCfg().testing);
+                },
+                Permission.perms("rainbowedit.testing"), ExecTarget.ALL, Desc.desc("zh_CN", "测试", "en_GB", "testing")
+        );
+
         // /re reload
         registry.register(
                 "re reload",
                 ctx -> {
                     CommandSender s = (CommandSender) ctx.sender();
+//                    plugin.getLin().linFile().config().reload();
+//                    plugin.getLin().linFile().language().reload();
                     plugin.reload();
-                    ms.sendKey(s, lang.message.reloaded);
+                    plugin.getMs().sendKey(s, plugin.getLang().message.reloaded);
                 },
                 Permission.perms("rainbowedit.reload"), ExecTarget.ALL, Desc.desc("zh_CN", "重新载入配置文件", "en_GB", "reload all plugin files")
         );
