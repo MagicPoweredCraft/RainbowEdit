@@ -6,7 +6,7 @@
 - 未来将以同样简单的方法支持对于魔咒等其他数据的修改。
 
 ## 前置
-- 无
+- LinlangRuntimeBukkit 2.2.0.0-SNAPSHOT
 
 ## 兼容性
-- Minecraft Bukkit 1.12 或更高版本。
+- Java 17，Minecraft Bukkit 1.18.2 或更高版本。

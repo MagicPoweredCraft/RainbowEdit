@@ -9,14 +9,12 @@ depend:
 
 commands:
   re:
-    description: <name/~/add/+/set/@/before/>/after/</replace/#/preview/$/apply/./cancel/!/remove/-/clear/%>
-    usage: /<command> <name/~/add/+/set/@/before/>/after/</replace/#/preview/$/apply/./cancel/!/remove/-/clear/%>
+    description: Edit item names and lore
+    usage: /<command> help
     aliases:
       - rainbowedit
       - rainbowe
       - redit
-      - re
-    tab-completions: com.rainbowedit.magicpowered.CommandListener
 
 permissions:
   rainbowedit.use.name:
@@ -27,4 +25,10 @@ permissions:
     default: op
   rainbowedit.reload:
     description: 重载插件
+    default: op
+  rainbowedit.language:
+    description: 查看插件当前语言
+    default: op
+  rainbowedit.testing:
+    description: 执行琳琅集成测试命令
     default: op

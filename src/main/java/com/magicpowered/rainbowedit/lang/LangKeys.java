@@ -1,98 +1,94 @@
 package com.magicpowered.rainbowedit.lang;
 
-
-import api.linlang.file.file.annotations.I18nComment;
+import api.linlang.file.file.FileType;
+import api.linlang.file.file.LangMap;
+import api.linlang.file.file.LangText;
+import api.linlang.file.file.annotations.LangPack;
 import api.linlang.file.file.annotations.NamingStyle;
 
-import java.util.LinkedHashMap;
-
+/**
+ * RainbowEdit 的语言字段结构。
+ */
+@LangPack(filePath = "lang", format = FileType.YAML, defaultLocale = "zh_CN")
 @NamingStyle(NamingStyle.Style.KEBAB)
-@I18nComment(locale = "zh_CN", lines = {"中文（中国大陆）语言文件"})
-@I18nComment(locale = "en_GB", lines = {"English (UK) language file"})
-public class LangKeys {
-    @I18nComment(locale = "zh_CN", lines = {"消息相关"})
-    @I18nComment(locale = "en_GB", lines = {"Message section"})
+public final class LangKeys {
+
     public Message message = new Message();
-    
-    @I18nComment(locale = "zh_CN", lines = {"预览模式提示"})
-    @I18nComment(locale = "en_GB", lines = {"Preview mode prompt"})
-    public PreviewUi previewUI = new PreviewUi();
+    public Command command = new Command();
+    public PreviewUi previewUi = new PreviewUi();
 
-    
+    /**
+     * 插件运行时消息。
+     */
     @NamingStyle(NamingStyle.Style.KEBAB)
-    public static class Message {
-
-        @I18nComment(locale = "zh_CN", lines = {"插件消息前缀"})
-        @I18nComment(locale = "en_GB", lines = {"Prefix for all plugin messages"})
-        public String prefix;
-
-        @I18nComment(locale = "zh_CN", lines = {"主手为空时提示"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when main-hand is empty"})
-        public String noItemInHand;
-        @I18nComment(locale = "zh_CN", lines = {"物品无 lore 时提示"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when item has no lore"})
-        public String itemHasNoLore;
-        @I18nComment(locale = "zh_CN", lines = {"设置物品名称成功时提示"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when item display name is set successfully"})
-        public String nameSetup;
-        @I18nComment(locale = "zh_CN", lines = {"指定的 lore 行不存在时提示"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when the specified lore line does not exist"})
-        public String invalidLoreLine;
-        @I18nComment(locale = "zh_CN", lines = {"成功添加新的 lore 行时提示"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when a new lore line is added successfully"})
-        public String loreAdded;
-        @I18nComment(locale = "zh_CN", lines = {"替换时未找到旧的字串"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when the old substring was not found during replace"})
-        public String oldStringNotFound;
-        @I18nComment(locale = "zh_CN", lines = {"替换 lore 成功"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when lore text was replaced successfully"})
-        public String loreReplaced;
-        @I18nComment(locale = "zh_CN", lines = {"设置某一行 lore 成功"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when a lore line is set successfully"})
-        public String loreLineSetup;
-        @I18nComment(locale = "zh_CN", lines = {"在指定行插入 lore 成功；{insert_mode} = BEFORE/AFTER"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when lore was inserted at the specified line; {insert_mode} = BEFORE/AFTER"})
-        public String loreLineInserted;
-        @I18nComment(locale = "zh_CN", lines = {"删除某一行 lore 成功"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when a lore line is removed successfully"})
-        public String loreLineRemoved;
-        @I18nComment(locale = "zh_CN", lines = {"清空 lore"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when all lore lines were cleared"})
-        public String loreCleared;
-        @I18nComment(locale = "zh_CN", lines = {"进入预览模式"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when entering preview mode"})
-        public String previewEnter;
-        @I18nComment(locale = "zh_CN", lines = {"不在预览模式时，操作退出预览模式的提示"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when trying to exit preview mode while not in preview mode"})
-        public String previewIsDisable;
-        @I18nComment(locale = "zh_CN", lines = {"在预览模式时，操作进入预览模式的提示"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when trying to enter preview mode while already in preview mode"})
-        public String previewAlreadyEnabled;
-        @I18nComment(locale = "zh_CN", lines = {"退出预览模式，并且应用修改"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when exiting preview mode and applying changes"})
-        public String appliedPreviewChanges;
-        @I18nComment(locale = "zh_CN", lines = {"退出预览模式，但是撤销修改"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when exiting preview mode and discarding changes"})
-        public String canceledPreviewChanges;
-        @I18nComment(locale = "zh_CN", lines = {"预览模式禁止移动物品"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when moving items is blocked in preview mode"})
-        public String cannotMovePreviewItem;
-        @I18nComment(locale = "zh_CN", lines = {"预览模式禁止丢弃物品"})
-        @I18nComment(locale = "en_GB", lines = {"Shown when dropping items is blocked in preview mode"})
-        public String cannotDropPreviewItem;
-        @I18nComment(locale = "zh_CN", lines = {"快捷栏中没有任何物品"})
-        @I18nComment(locale = "en_GB", lines = {"There are no items in the hotbar"})
-        public String noItemInHotbar;
-
-        @I18nComment(locale = "zh_CN", lines = "配置文件重新加载成功")
-        @I18nComment(locale = "en_GB", lines = "reloaded all plugin files")
-        public String reloaded;
+    public static final class Message {
+        public LangText prefix = LangText.of("&7[&e彩虹编辑&7]&r ");
+        public LangText noItemInHand = LangText.of("&f您的主手中没有物品");
+        public LangText itemHasNoLore = LangText.of("&f此物品没有描述行");
+        public LangText nameSetup = LangText.of("&f成功设置物品名为 {name}");
+        public LangText invalidLoreLine = LangText.of("&f此物品没有指定的描述行 {line}");
+        public LangText loreAdded = LangText.of("&f成功添加新的描述行 {lore}");
+        public LangText oldStringNotFound = LangText.of("&f未找到要被替换的字符串 {old_lore}");
+        public LangText loreReplaced = LangText.of("&f成功替换第 {line} 行：{old_lore} -> {new_lore}");
+        public LangText loreLineSetup = LangText.of("&f成功将第 {line} 行设置为 {lore}");
+        public LangText loreLineInserted = LangText.of("&f成功在第 {line} 行之{insert_mode}插入 {lore}");
+        public LangText loreLineRemoved = LangText.of("&f成功删除描述行 {lore}");
+        public LangText loreCleared = LangText.of("&f成功清空所有描述行");
+        public LangText previewEnter = LangText.of("&f已进入预览模式。使用 /re . 应用，或使用 /re : 撤销。");
+        public LangText previewIsDisable = LangText.of("&f您未处于预览模式中");
+        public LangText previewAlreadyEnabled = LangText.of("&f您已经处于预览模式中");
+        public LangText appliedPreviewChanges = LangText.of("&f修改已应用，预览模式已退出");
+        public LangText canceledPreviewChanges = LangText.of("&f修改已撤销，预览模式已退出");
+        public LangText cannotMovePreviewItem = LangText.of("&f预览模式下无法移动或切换预览物品");
+        public LangText cannotDropPreviewItem = LangText.of("&f预览模式下无法丢弃预览物品");
+        public LangText noItemInHotbar = LangText.of("&f您的快捷栏中没有预览物品");
+        public LangText reloaded = LangText.of("&f配置文件与语言文件已重新载入");
+        public LangText currentLanguage = LangText.of("&f当前语言：{locale}");
+        public LangText insertBefore = LangText.of("前");
+        public LangText insertAfter = LangText.of("后");
     }
 
-    @NamingStyle(NamingStyle.Style.IDENTITY)
-    public static class PreviewUi {
-        public LinkedHashMap<Integer, String> frames = new LinkedHashMap<Integer, String>() ;
+    /**
+     * 命令帮助及参数标签。
+     */
+    @NamingStyle(NamingStyle.Style.KEBAB)
+    public static final class Command {
+        public LangText name = LangText.of("修改物品名称");
+        public LangText add = LangText.of("添加新的描述行");
+        public LangText set = LangText.of("修改指定描述行");
+        public LangText before = LangText.of("在指定描述行前插入一行");
+        public LangText after = LangText.of("在指定描述行后插入一行");
+        public LangText replace = LangText.of("替换指定描述行中的文本");
+        public LangText remove = LangText.of("删除指定描述行");
+        public LangText clear = LangText.of("清空所有描述行");
+        public LangText preview = LangText.of("进入预览模式");
+        public LangText apply = LangText.of("应用修改并退出预览模式");
+        public LangText cancel = LangText.of("撤销修改并退出预览模式");
+        public LangText language = LangText.of("查看当前语言");
+        public LangText testing = LangText.of("验证琳琅消息服务");
+        public LangText reload = LangText.of("重新载入配置文件与语言文件");
+        public LangText text = LangText.of("文本内容");
+        public LangText line = LangText.of("描述行号");
+        public LangText lore = LangText.of("描述内容");
+        public LangText oldText = LangText.of("要替换的旧文本");
+        public LangText newText = LangText.of("替换后的新文本");
     }
 
-
+    /**
+     * 预览模式动作栏内容。
+     */
+    @NamingStyle(NamingStyle.Style.KEBAB)
+    public static final class PreviewUi {
+        public LangMap frames = LangMap.of(
+                "1", "&b彩虹编辑 &7[&c&l↓&7---------------------------] &b预览模式",
+                "2", "&b彩虹编辑 &7[----&c&l↓&7-----------------------] &b预览模式",
+                "3", "&b彩虹编辑 &7[-------&c&l↓&7--------------------] &b预览模式",
+                "4", "&b彩虹编辑 &7[----------&c&l↓&7-----------------] &b预览模式",
+                "5", "&b彩虹编辑 &7[--------------&c&l↓&7-------------] &b预览模式",
+                "6", "&b彩虹编辑 &7[-----------------&c&l↓&7----------] &b预览模式",
+                "7", "&b彩虹编辑 &7[--------------------&c&l↓&7-------] &b预览模式",
+                "8", "&b彩虹编辑 &7[------------------------&c&l↓&7---] &b预览模式",
+                "9", "&b彩虹编辑 &7[---------------------------&c&l↓&7] &b预览模式"
+        );
+    }
 }

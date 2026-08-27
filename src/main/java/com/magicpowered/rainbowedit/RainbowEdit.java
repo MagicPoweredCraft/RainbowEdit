@@ -1,127 +1,176 @@
 package com.magicpowered.rainbowedit;
 
-import api.linlang.audit.LinLog;
-import api.linlang.audit.LinLogger;
+import api.linlang.audit.log.LinLogger;
 import api.linlang.banner.LinBanner;
 import api.linlang.messenger.LinMessenger;
 import api.linlang.runtime.Lin;
+import api.linlang.runtime.LinOptions;
 import api.linlang.runtime.Linlang;
 import com.magicpowered.rainbowedit.config.Config;
-import com.magicpowered.rainbowedit.lang.EnGB;
+import com.magicpowered.rainbowedit.config.ConfigV0ToV1Migrator;
 import com.magicpowered.rainbowedit.lang.LangKeys;
-import com.magicpowered.rainbowedit.lang.ZhCN;
-import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.List;
+import java.util.logging.Level;
 
-public class RainbowEdit extends JavaPlugin implements Listener {
+/**
+ * RainbowEdit 插件入口。
+ */
+public final class RainbowEdit extends JavaPlugin {
 
-    @Getter
+    private static final String DEFAULT_LOCALE = "zh_CN";
+
     private ItemEditor itemEditor;
-    @Getter
-    private Config cfg;
-    @Getter
-    private LangKeys lang;
-    @Getter
-    private LinMessenger ms;
-    @Getter
+    private Config config;
+    private LangKeys language;
+    private LinMessenger messenger;
     private Linlang lin;
-    private static LinLogger LOG = LinLog.getLogger(RainbowEdit.class);
+    private LinLogger logger;
+    private String activeLocale = DEFAULT_LOCALE;
 
     @Override
     public void onEnable() {
         try {
-            lin = Lin.init(this);
-            cfg = lin.linFile().config().bind(Config.class);
-            lang = lin.linFile().language().bind(
-                    LangKeys.class,
-                    cfg.language,
-                    List.of(
-                            new ZhCN(),
-                            new EnGB()
-                    ));
-
-            LOG.startup("此日志应在服务器完成启动时打印");
-
-            lin.settings().fixedPrefix(lang.message.prefix).apply();
-            lin.parameters().initialLocale(cfg.language).apply();
-
-            ms = lin.linMessenger();
-            ms.withPrefix(lang.message.prefix);
-
+            initializeLinlang();
             itemEditor = new ItemEditor(this);
-
-            new CommandListener(this).register(lin.linCommand());
-
-            getServer().getPluginManager().registerEvents(this, this);
+            registerCommands();
             getServer().getPluginManager().registerEvents(itemEditor, this);
-
-            PluginDescriptionFile desc = getDescription();
-
-            LinBanner.print(LinBanner.options()
-                    .initials("MP : RS")
-                    .plugin("彩虹编辑", desc.getName(), desc.getVersion())
-                    .developers(getDescription().getAuthors())
-                    .site(null)
-                    .build());
-
-        } catch (Exception e) {
-            Bukkit.getServer().getLogger().info("[彩虹编辑] 启动失败");
-            e.printStackTrace();
+            printBanner();
+            logger.startup(
+                    "RainbowEdit 已启用，Linlang Runtime={}",
+                    lin.runtimeVersion()
+            );
+        } catch (Exception exception) {
+            if (logger != null) {
+                logger.error("RainbowEdit 启动失败", exception);
+            } else {
+                getLogger().log(Level.SEVERE, "RainbowEdit 启动失败", exception);
+            }
+            closeLinlang();
+            getServer().getPluginManager().disablePlugin(this);
         }
     }
 
     @Override
     public void onDisable() {
-        lin.linFile().config().saveAll();
-        lin.linFile().language().saveAll();
-        lin.close();
+        if (itemEditor != null) {
+            itemEditor.shutdown();
+        }
+        if (lin != null) {
+            lin.linFile().config().saveAll();
+            lin.linFile().language().saveAll();
+        }
+        closeLinlang();
         Bukkit.getServer().getLogger().info("[彩虹编辑] 插件已卸载，再会!");
     }
 
-    @EventHandler
-    public void onPluginDisable(PluginDisableEvent event) {
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        if (itemEditor.isInPreviewMode(player)) {
-            itemEditor.cancelPreviewChanges(player);
-        }
-    }
-
-
     /**
-     * 刷新琳琅服务
+     * 重新读取配置与语言文件。
      */
-    public void reload() {
-//        cfg = lin.linFile().config().bind(Config.class);
+    public void reloadServices() {
         lin.linFile().config().reload();
-        lin.linFile().language().setLocale(cfg.language);
-        lin.linFile().language().reload();
-//        lang = lin.linFile().language().bind(
-//                LangKeys.class,
-//                cfg.language,
-//                List.of(
-//                        new ZhCN(),
-//                        new EnGB()
-//                )
-//        );
-        LOG.info("lang.message.prefix={}", lang.message.prefix);
-        ms.withPrefix(lang.message.prefix);
+        String requestedLocale = configuredLocale();
+        boolean localeChanged = !activeLocale.equalsIgnoreCase(requestedLocale);
 
-        lin.settings().fixedPrefix(lang.message.prefix).apply();
-        lin.parameters().initialLocale(cfg.language).apply();
+        if (localeChanged) {
+            lin.parameters().totalLocale(requestedLocale).apply();
+            bindFiles();
+            messenger = lin.linMessenger();
+            activeLocale = requestedLocale;
+            registerCommands();
+        } else {
+            lin.linFile().language().reload();
+        }
 
+        applyPrefix();
+        lin.linAudit().record(
+                "rainbowedit.files.reloaded",
+                "locale", activeLocale,
+                "localeChanged", localeChanged
+        );
+    }
+
+    private void initializeLinlang() {
+        lin = Lin.setup(
+                this,
+                new LinOptions()
+                        .totalLocale(DEFAULT_LOCALE)
+                        .pluginLogger(true)
+        );
+        logger = lin.linAudit().logger();
+        lin.linFile().config().registerMigrator(new ConfigV0ToV1Migrator());
+        bindFiles();
+
+        String requestedLocale = configuredLocale();
+        if (!DEFAULT_LOCALE.equalsIgnoreCase(requestedLocale)) {
+            lin.parameters().totalLocale(requestedLocale).apply();
+            bindFiles();
+        }
+
+        activeLocale = requestedLocale;
+        messenger = lin.linMessenger();
+        applyPrefix();
+    }
+
+    private void bindFiles() {
+        config = lin.linFile().config().bind(Config.class);
+        language = lin.linFile().language().bind(LangKeys.class);
+    }
+
+    private void applyPrefix() {
+        lin.settings()
+                .dynamicTotalPrefix(owner -> language.message.prefix.resolve())
+                .apply();
+    }
+
+    private String configuredLocale() {
+        if (config == null || config.language == null || config.language.isBlank()) {
+            return DEFAULT_LOCALE;
+        }
+        return config.language.trim();
+    }
+
+    private void registerCommands() {
         new CommandListener(this).register(lin.linCommand());
+    }
+
+    private void printBanner() {
+        PluginDescriptionFile description = getDescription();
+        LinBanner.print(LinBanner.options()
+                .initials("MP : RS")
+                .plugin("彩虹编辑", description.getName(), description.getVersion())
+                .developers(description.getAuthors())
+                .site(null)
+                .build());
+    }
+
+    private void closeLinlang() {
+        if (lin == null) {
+            return;
+        }
+        lin.close();
+        lin = null;
+    }
+
+    public ItemEditor getItemEditor() {
+        return itemEditor;
+    }
+
+    public Config getConfigData() {
+        return config;
+    }
+
+    public LangKeys getLanguage() {
+        return language;
+    }
+
+    public LinMessenger getMessenger() {
+        return messenger;
+    }
+
+    public Linlang getLin() {
+        return lin;
     }
 }

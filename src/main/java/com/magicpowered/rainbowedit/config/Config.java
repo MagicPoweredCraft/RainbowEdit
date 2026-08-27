@@ -7,7 +7,7 @@ import api.linlang.file.file.annotations.ConfigFile;
 import api.linlang.file.file.annotations.ConfigVersion;
 import api.linlang.file.file.annotations.NamingStyle;
 
-@ConfigFile(name="config", path="", format= FileType.YAML)
+@ConfigFile(name = "config", path = "", format = FileType.YAML)
 @ConfigVersion(1)
 @NamingStyle(NamingStyle.Style.KEBAB)
 @Comment({"RainbowEdit 彩虹编辑",
@@ -25,5 +25,9 @@ public class Config {
     })
     public String language = "zh_CN";
 
-    public String testing = "testing1";
+    @Comment({
+            "用于验证 Messenger 普通字符串发送的测试内容",
+            "Test content used to verify plain Messenger messages"
+    })
+    public String testing = "Linlang Messenger is working";
 }
