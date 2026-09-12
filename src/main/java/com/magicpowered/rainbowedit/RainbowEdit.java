@@ -38,10 +38,6 @@ public final class RainbowEdit extends JavaPlugin {
             registerCommands();
             getServer().getPluginManager().registerEvents(itemEditor, this);
             printBanner();
-            logger.startup(
-                    "RainbowEdit 已启用，Linlang Runtime={}",
-                    lin.runtimeVersion()
-            );
         } catch (Exception exception) {
             if (logger != null) {
                 logger.error("RainbowEdit 启动失败", exception);
@@ -139,7 +135,7 @@ public final class RainbowEdit extends JavaPlugin {
     private void printBanner() {
         PluginDescriptionFile description = getDescription();
         LinBanner.print(LinBanner.options()
-                .initials("MP : RS")
+                .initials("RE")
                 .plugin("彩虹编辑", description.getName(), description.getVersion())
                 .developers(description.getAuthors())
                 .site(null)
