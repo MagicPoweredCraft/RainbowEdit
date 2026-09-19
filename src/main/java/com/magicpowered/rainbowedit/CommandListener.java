@@ -8,6 +8,8 @@ import com.magicpowered.rainbowedit.lang.LangKeys;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import static api.linlang.command.CommandOptions.options;
+
 /**
  * RainbowEdit 命令注册器。
  */
@@ -54,9 +56,10 @@ public final class CommandListener {
                         (Player) context.sender(),
                         normalize(context.get("text"))
                 ),
-                LinCommand.Permission.segment("name"),
-                LinCommand.ExecTarget.PLAYER,
-                i18n(text.name, "text", text.text)
+                options()
+                        .relativePermission("name")
+                        .player()
+                        .i18n(text.name, "text", text.text)
         );
     }
 
@@ -87,9 +90,10 @@ public final class CommandListener {
                         (Player) context.sender(),
                         normalize(context.get("line"))
                 ),
-                LinCommand.Permission.segment("lore"),
-                LinCommand.ExecTarget.PLAYER,
-                i18n(text.add, "line", text.lore)
+                options()
+                        .relativePermission("lore")
+                        .player()
+                        .i18n(text.add, "line", text.lore)
         );
     }
 
@@ -102,14 +106,16 @@ public final class CommandListener {
                         context.get("idx"),
                         normalize(context.get("text"))
                 ),
-                LinCommand.Permission.segment("lore"),
-                LinCommand.ExecTarget.PLAYER,
-                i18n(text.set, "idx", text.line, "text", text.text)
+                options()
+                        .relativePermission("lore")
+                        .player()
+                        .i18n(text.set, "idx", text.line, "text", text.text)
         );
     }
 
     private void registerInsert(CommandRoot root, String literal, boolean before) {
         LangKeys.Command text = plugin.getLanguage().command;
+        LangText description = before ? text.before : text.after;
         root.register(
                 literal + " <idx:int(1..999)> <text:text(regex=.+)>",
                 context -> {
@@ -122,9 +128,10 @@ public final class CommandListener {
                         itemEditor.insertLoreAfter(player, line, value);
                     }
                 },
-                LinCommand.Permission.segment("lore"),
-                LinCommand.ExecTarget.PLAYER,
-                i18n(before ? text.before : text.after, "idx", text.line, "text", text.lore)
+                options()
+                        .relativePermission("lore")
+                        .player()
+                        .i18n(description, "idx", text.line, "text", text.lore)
         );
     }
 
@@ -138,9 +145,7 @@ public final class CommandListener {
                         normalize(context.get("old")),
                         normalize(context.get("text"))
                 ),
-                LinCommand.Permission.segment("lore"),
-                LinCommand.ExecTarget.PLAYER,
-                i18n(
+                options().relativePermission("lore").player().i18n(
                         text.replace,
                         "idx", text.line,
                         "old", text.oldText,
@@ -157,9 +162,7 @@ public final class CommandListener {
                         (Player) context.sender(),
                         context.get("idx")
                 ),
-                LinCommand.Permission.segment("lore"),
-                LinCommand.ExecTarget.PLAYER,
-                i18n(text.remove, "idx", text.line)
+                options().relativePermission("lore").player().i18n(text.remove, "idx", text.line)
         );
     }
 
@@ -183,9 +186,7 @@ public final class CommandListener {
         root.register(
                 literal,
                 context -> action.run((Player) context.sender()),
-                LinCommand.Permission.segment("lore"),
-                LinCommand.ExecTarget.PLAYER,
-                LinCommand.I18n.create().desc(description)
+                options().relativePermission("lore").player().desc(description)
         );
     }
 
@@ -198,9 +199,10 @@ public final class CommandListener {
                         plugin.getLanguage().message.currentLanguage,
                         "locale", plugin.getConfigData().language
                 ),
-                LinCommand.Permission.perms("rainbowedit.language"),
-                LinCommand.ExecTarget.ALL,
-                LinCommand.I18n.create().desc(text.language)
+                options()
+                        .permission("rainbowedit.language")
+                        .all()
+                        .desc(text.language)
         );
         root.register(
                 "testing",
@@ -208,9 +210,10 @@ public final class CommandListener {
                         context.sender(),
                         plugin.getConfigData().testing
                 ),
-                LinCommand.Permission.perms("rainbowedit.testing"),
-                LinCommand.ExecTarget.ALL,
-                LinCommand.I18n.create().desc(text.testing)
+                options()
+                        .permission("rainbowedit.testing")
+                        .all()
+                        .desc(text.testing)
         );
         root.register(
                 "reload",
@@ -221,9 +224,10 @@ public final class CommandListener {
                             plugin.getLanguage().message.reloaded
                     );
                 },
-                LinCommand.Permission.perms("rainbowedit.reload"),
-                LinCommand.ExecTarget.ALL,
-                LinCommand.I18n.create().desc(text.reload)
+                options()
+                        .permission("rainbowedit.reload")
+                        .all()
+                        .desc(text.reload)
         );
     }
 
@@ -235,14 +239,6 @@ public final class CommandListener {
                 "reason", failure.reason().name(),
                 "cause", failure.cause() == null ? "" : failure.cause().getClass().getName()
         );
-    }
-
-    private static LinCommand.I18n i18n(LangText description, Object... labels) {
-        LinCommand.I18n result = LinCommand.I18n.create().desc(description);
-        for (int index = 0; index + 1 < labels.length; index += 2) {
-            result.label((String) labels[index], (LangText) labels[index + 1]);
-        }
-        return result;
     }
 
     private static String senderName(Object sender) {
